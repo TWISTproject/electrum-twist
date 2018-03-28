@@ -5,7 +5,7 @@ Electrum-twist - Lightweight twist client
 
   Licence: MIT Licence
   Original Author: Thomas Voegtlin
-  Port Maintainer: dev0tion
+  Port Maintainer: Taylor
   Language: Python
   Homepage: https://www.twistplatform.com
 
