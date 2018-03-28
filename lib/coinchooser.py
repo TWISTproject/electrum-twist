@@ -26,7 +26,7 @@
 from collections import defaultdict, namedtuple
 from math import floor, log10
 
-from stratis import sha256, COIN, TYPE_ADDRESS
+from twist import sha256, COIN, TYPE_ADDRESS
 from transaction import Transaction
 from util import NotEnoughFunds, PrintError, profiler
 
@@ -199,7 +199,7 @@ class CoinChooserBase(PrintError):
         tx_size = base_size + sum(bucket.size for bucket in buckets)
 
         # This takes a count of change outputs and returns a tx fee;
-        # each pay-to-stratis-address output serializes as 34 bytes
+        # each pay-to-twist-address output serializes as 34 bytes
         fee = lambda count: fee_estimator(tx_size + count * 34)
         change = self.change_outputs(tx, change_addrs, fee, dust_threshold)
         tx.add_outputs(change)

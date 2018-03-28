@@ -1,11 +1,11 @@
 from PyQt4.QtGui import *
-from electrum_stratis.plugins import BasePlugin, hook
-from electrum_stratis.i18n import _
+from electrum_twist.plugins import BasePlugin, hook
+from electrum_twist.i18n import _
 
 
 import datetime
-from electrum_stratis.util import format_satoshis
-from electrum_stratis.stratis import COIN
+from electrum_twist.util import format_satoshis
+from electrum_twist.twist import COIN
 
 try:
     import matplotlib.pyplot as plt
@@ -97,7 +97,7 @@ class Plugin(BasePlugin):
         ax.add_artist(anchored_box)
 
 
-        plt.ylabel('STRAT')
+        plt.ylabel('TWIST')
         plt.xlabel('Dates')
         xfmt = md.DateFormatter('%Y-%m-%d')
         ax.xaxis.set_major_formatter(xfmt)

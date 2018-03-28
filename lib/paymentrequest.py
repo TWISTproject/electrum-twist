@@ -40,17 +40,17 @@ try:
 except ImportError:
     sys.exit("Error: could not find paymentrequest_pb2.py. Create it with 'protoc --proto_path=lib/ --python_out=lib/ lib/paymentrequest.proto'")
 
-import stratis
+import twist
 import util
 from util import print_error
 import transaction
 import x509
 import rsakey
 
-from stratis import TYPE_ADDRESS
+from twist import TYPE_ADDRESS
 
-REQUEST_HEADERS = {'Accept': 'application/stratis-paymentrequest', 'User-Agent': 'Electrum'}
-ACK_HEADERS = {'Content-Type':'application/stratis-payment','Accept':'application/stratis-paymentack','User-Agent':'Electrum'}
+REQUEST_HEADERS = {'Accept': 'application/twist-paymentrequest', 'User-Agent': 'Electrum'}
+ACK_HEADERS = {'Content-Type':'application/twist-payment','Accept':'application/twist-paymentack','User-Agent':'Electrum'}
 
 ca_path = requests.certs.where()
 ca_list, ca_keyID = x509.load_certificates(ca_path)
@@ -70,9 +70,9 @@ def get_payment_request(url):
         try:
             response = requests.request('GET', url, headers=REQUEST_HEADERS)
             response.raise_for_status()
-            # Guard against `stratis:`-URIs with invalid payment request URLs
+            # Guard against `twist:`-URIs with invalid payment request URLs
             if "Content-Type" not in response.headers \
-            or response.headers["Content-Type"] != "application/stratis-paymentrequest":
+            or response.headers["Content-Type"] != "application/twist-paymentrequest":
                 data = None
                 error = "payment URL not pointing to a payment request handling server"
             else:
@@ -109,7 +109,7 @@ class PaymentRequest:
     def parse(self, r):
         if self.error:
             return
-        self.id = stratis.sha256(r)[0:16].encode('hex')
+        self.id = twist.sha256(r)[0:16].encode('hex')
         try:
             self.data = pb2.PaymentRequest()
             self.data.ParseFromString(r)
@@ -147,7 +147,7 @@ class PaymentRequest:
             return True
         if pr.pki_type in ["x509+sha256", "x509+sha1"]:
             return self.verify_x509(pr)
-        elif pr.pki_type in ["dnssec+strat", "dnssec+ecdsa"]:
+        elif pr.pki_type in ["dnssec+TWIST", "dnssec+ecdsa"]:
             return self.verify_dnssec(pr, contacts)
         else:
             self.error = "ERROR: Unsupported PKI Type for Message Signature"
@@ -196,12 +196,12 @@ class PaymentRequest:
         if info.get('validated') is not True:
             self.error = "Alias verification failed (DNSSEC)"
             return False
-        if pr.pki_type == "dnssec+strat":
+        if pr.pki_type == "dnssec+TWIST":
             self.requestor = alias
             address = info.get('address')
             pr.signature = ''
             message = pr.SerializeToString()
-            if stratis.verify_message(address, sig, message):
+            if twist.verify_message(address, sig, message):
                 self.error = 'Verified with DNSSEC'
                 return True
             else:
@@ -321,12 +321,12 @@ def make_unsigned_request(req):
 
 
 def sign_request_with_alias(pr, alias, alias_privkey):
-    pr.pki_type = 'dnssec+strat'
+    pr.pki_type = 'dnssec+TWIST'
     pr.pki_data = str(alias)
     message = pr.SerializeToString()
-    ec_key = stratis.regenerate_key(alias_privkey)
-    address = stratis.address_from_private_key(alias_privkey)
-    compressed = stratis.is_compressed(alias_privkey)
+    ec_key = twist.regenerate_key(alias_privkey)
+    address = twist.address_from_private_key(alias_privkey)
+    compressed = twist.is_compressed(alias_privkey)
     pr.signature = ec_key.sign_message(message, compressed, address)
 
 
@@ -430,7 +430,7 @@ def serialize_request(req):
     requestor = req.get('name')
     if requestor and signature:
         pr.signature = signature.decode('hex')
-        pr.pki_type = 'dnssec+strat'
+        pr.pki_type = 'dnssec+TWIST'
         pr.pki_data = str(requestor)
     return pr
 

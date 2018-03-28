@@ -2,10 +2,10 @@ import tty, sys
 import curses, datetime, locale
 from decimal import Decimal
 
-from electrum_stratis.util import format_satoshis, set_verbosity
-from electrum_stratis.util import StoreDict
-from electrum_stratis.stratis import is_valid, COIN, TYPE_ADDRESS
-from electrum_stratis import Wallet, WalletStorage
+from electrum_twist.util import format_satoshis, set_verbosity
+from electrum_twist.util import StoreDict
+from electrum_twist.twist import is_valid, COIN, TYPE_ADDRESS
+from electrum_twist import Wallet, WalletStorage
 
 _ = lambda x:x
 
@@ -19,7 +19,7 @@ class ElectrumGui:
         self.network = daemon.network
         storage = WalletStorage(config.get_wallet_path())
         if not storage.file_exists:
-            print "Wallet not found. try 'electrum-stratis create'"
+            print "Wallet not found. try 'electrum-twist create'"
             exit()
 
         self.wallet = Wallet(storage)
@@ -308,7 +308,7 @@ class ElectrumGui:
 
     def do_send(self):
         if not is_valid(self.str_recipient):
-            self.show_message(_('Invalid Stratis address'))
+            self.show_message(_('Invalid twist address'))
             return
         try:
             amount = int(Decimal(self.str_amount) * COIN)

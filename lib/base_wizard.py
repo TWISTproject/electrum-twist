@@ -24,7 +24,7 @@
 # SOFTWARE.
 
 import os
-import stratis
+import twist
 import keystore
 from wallet import Wallet, Imported_Wallet, Standard_Wallet, Multisig_Wallet, WalletStorage, wallet_types
 from i18n import _
@@ -71,7 +71,7 @@ class BaseWizard(object):
 
     def new(self):
         name = os.path.basename(self.storage.path)
-        title = _("Welcome to the Electrum Stratis installation wizard.")
+        title = _("Welcome to the Electrum twist installation wizard.")
         message = '\n'.join([
             _("The wallet '%s' does not exist.") % name,
             _("What kind of wallet do you want to create?")
@@ -80,7 +80,7 @@ class BaseWizard(object):
             ('standard',  _("Standard wallet")),
             ('2fa', _("Wallet with two-factor authentication")),
             #('multisig',  _("Multi-signature wallet")),
-            ('imported',  _("Watch Stratis addresses")),
+            ('imported',  _("Watch twist addresses")),
         ]
         choices = [pair for pair in wallet_kinds if pair[0] in wallet_types]
         self.choice_dialog(title=title, message=message, choices=choices, run_next=self.on_wallet_type)
@@ -137,8 +137,8 @@ class BaseWizard(object):
 
     def import_addresses(self):
         v = keystore.is_address_list
-        title = _("Import Stratis Addresses")
-        message = _("Enter a list of Stratis addresses. This will create a watching-only wallet.")
+        title = _("Import twist Addresses")
+        message = _("Enter a list of twist addresses. This will create a watching-only wallet.")
         self.add_xpub_dialog(title=title, message=message, run_next=self.on_import_addresses, is_valid=v)
 
     def on_import_addresses(self, text):
@@ -154,7 +154,7 @@ class BaseWizard(object):
             title = _("Create keystore from keys")
             message = ' '.join([
                 _("To create a watching-only wallet, please enter your master public key (xpub)."),
-                _("To create a spending wallet, please enter a master private key (xprv), or a list of Stratis private keys.")
+                _("To create a spending wallet, please enter a master private key (xprv), or a list of twist private keys.")
             ])
             self.add_xpub_dialog(title=title, message=message, run_next=self.on_restore_from_key, is_valid=v)
         else:
@@ -267,7 +267,7 @@ class BaseWizard(object):
     def restore_from_seed(self):
         self.opt_bip39 = True
         self.opt_ext = True
-        test = stratis.is_seed if self.wallet_type == 'standard' else stratis.is_new_seed
+        test = twist.is_seed if self.wallet_type == 'standard' else twist.is_new_seed
         self.restore_seed_dialog(run_next=self.on_restore_seed, test=test)
 
     def on_restore_seed(self, seed, is_bip39, is_ext):
@@ -275,7 +275,7 @@ class BaseWizard(object):
             f = lambda passphrase: self.on_restore_bip39(seed, passphrase)
             self.passphrase_dialog(run_next=f) if is_ext else f('')
         else:
-            seed_type = stratis.seed_type(seed)
+            seed_type = twist.seed_type(seed)
             if seed_type == 'standard':
                 f = lambda passphrase: self.run('create_keystore', seed, passphrase)
                 self.passphrase_dialog(run_next=f) if is_ext else f('')
@@ -358,7 +358,7 @@ class BaseWizard(object):
         self.on_keystore(k)
 
     def create_seed(self):
-        from electrum_stratis.mnemonic import Mnemonic
+        from electrum_twist.mnemonic import Mnemonic
         seed = Mnemonic('en').make_seed()
         self.opt_bip39 = False
         f = lambda x: self.request_passphrase(seed, x)
@@ -392,5 +392,5 @@ class BaseWizard(object):
             self.wallet.synchronize()
             self.wallet.storage.write()
             self.terminate()
-        msg = _("Electrum Stratis is generating your addresses, please wait.")
+        msg = _("Electrum twist is generating your addresses, please wait.")
         self.waiting_dialog(task, msg)

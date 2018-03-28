@@ -28,8 +28,8 @@
 # Note: The deserialization code originally comes from ABE.
 
 
-import stratis
-from stratis import *
+import twist
+from twist import *
 from util import print_error, profiler
 import time
 import sys
@@ -545,7 +545,7 @@ class Transaction:
             return addr.encode('hex')
         elif output_type == TYPE_ADDRESS:
             addrtype, hash_160 = bc_address_to_hash_160(addr)
-            if addrtype == 63:
+            if addrtype == 0:
                 script = '76a9'                                      # op_dup, op_hash_160
                 script += push_script(hash_160.encode('hex'))
                 script += '88ac'                                     # op_equalverify, op_checksig
@@ -730,7 +730,7 @@ class Transaction:
                     for_sig = Hash(self.tx_for_sig(i).decode('hex'))
                     pkey = regenerate_key(sec)
                     secexp = pkey.secret
-                    private_key = stratis.MySigningKey.from_secret_exponent( secexp, curve = SECP256k1 )
+                    private_key = twist.MySigningKey.from_secret_exponent( secexp, curve = SECP256k1 )
                     public_key = private_key.get_verifying_key()
                     sig = private_key.sign_digest_deterministic( for_sig, hashfunc=hashlib.sha256, sigencode = ecdsa.util.sigencode_der )
                     assert public_key.verify_digest( sig, for_sig, sigdecode = ecdsa.util.sigdecode_der)

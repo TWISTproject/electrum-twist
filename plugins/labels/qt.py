@@ -3,11 +3,11 @@ from functools import partial
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from electrum_stratis.plugins import hook
-from electrum_stratis.i18n import _
-from electrum_stratis_gui.qt import EnterButton
-from electrum_stratis_gui.qt.util import ThreadedButton, Buttons
-from electrum_stratis_gui.qt.util import WindowModalDialog, OkButton
+from electrum_twist.plugins import hook
+from electrum_twist.i18n import _
+from electrum_twist_gui.qt import EnterButton
+from electrum_twist_gui.qt.util import ThreadedButton, Buttons
+from electrum_twist_gui.qt.util import WindowModalDialog, OkButton
 
 from labels import LabelsPlugin
 

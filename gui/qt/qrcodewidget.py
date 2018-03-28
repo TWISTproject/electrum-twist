@@ -5,8 +5,8 @@ import PyQt4.QtGui as QtGui
 import os
 import qrcode
 
-import electrum_stratis
-from electrum_stratis.i18n import _
+import electrum_twist
+from electrum_twist.i18n import _
 from util import WindowModalDialog
 
 
@@ -98,7 +98,7 @@ class QRDialog(WindowModalDialog):
         hbox = QHBoxLayout()
         hbox.addStretch(1)
 
-        config = electrum_stratis.get_config()
+        config = electrum_twist.get_config()
         if config:
             filename = os.path.join(config.path, "qrcode.png")
 

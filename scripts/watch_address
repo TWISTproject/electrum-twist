@@ -2,13 +2,13 @@
 
 import sys
 import time
-from electrum_stratis import SimpleConfig, Network
-from electrum_stratis.util import print_msg, json_encode
+from electrum_twist import SimpleConfig, Network
+from electrum_twist.util import print_msg, json_encode
 
 try:
     addr = sys.argv[1]
 except Exception:
-    print "usage: watch_address <stratis_address>"
+    print "usage: watch_address <twist_address>"
     sys.exit(1)
 
 # start network

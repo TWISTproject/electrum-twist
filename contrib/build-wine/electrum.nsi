@@ -6,9 +6,9 @@
 ;--------------------------------
 ;Variables
 
-  !define PRODUCT_NAME "Electrum-Stratis"
-  !define PRODUCT_WEB_SITE "https://github.com/stratisproject/electrum-stratis"
-  !define PRODUCT_PUBLISHER "Stratis"
+  !define PRODUCT_NAME "Electrum-twist"
+  !define PRODUCT_WEB_SITE "https://github.com/twistproject/electrum-twist"
+  !define PRODUCT_PUBLISHER "twist"
   !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 
 ;--------------------------------
@@ -16,7 +16,7 @@
 
   ;Name and file
   Name "${PRODUCT_NAME}"
-  OutFile "dist/electrum-stratis-setup.exe"
+  OutFile "dist/electrum-twist-setup.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\${PRODUCT_NAME}"
@@ -90,12 +90,12 @@
 ;--------------------------------
 ;Installer Sections
 
-;Check if we have Administrator rights
+;Check if we have AdminiTWISTor rights
 Function .onInit
 	UserInfo::GetAccountType
 	pop $0
 	${If} $0 != "admin" ;Require admin rights on NT4+
-		MessageBox mb_iconstop "Administrator rights required!"
+		MessageBox mb_iconstop "AdminiTWISTor rights required!"
 		SetErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
 		Quit
 	${EndIf}
@@ -105,7 +105,7 @@ Section
   SetOutPath $INSTDIR
 
   ;Files to pack into the installer
-  File /r "dist\electrum-stratis\*.*"
+  File /r "dist\electrum-twist\*.*"
   File "..\..\icons\electrum.ico"
 
   ;Store installation folder
@@ -117,19 +117,19 @@ Section
 
   ;Create desktop shortcut
   DetailPrint "Creating desktop shortcut..."
-  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\electrum-stratis.exe" ""
+  CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\electrum-twist.exe" ""
 
   ;Create start-menu items
   DetailPrint "Creating start-menu items..."
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\electrum-stratis.exe" "" "$INSTDIR\electrum-stratis.exe" 0
+  CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\electrum-twist.exe" "" "$INSTDIR\electrum-twist.exe" 0
 
-  ;Links stratis: URI's to Electrum
-  WriteRegStr HKCU "Software\Classes\stratis" "" "URL:stratis Protocol"
-  WriteRegStr HKCU "Software\Classes\stratis" "URL Protocol" ""
-  WriteRegStr HKCU "Software\Classes\stratis" "DefaultIcon" "$\"$INSTDIR\electrum.ico, 0$\""
-  WriteRegStr HKCU "Software\Classes\stratis\shell\open\command" "" "$\"$INSTDIR\electrum-stratis.exe$\" $\"%1$\""
+  ;Links twist: URI's to Electrum
+  WriteRegStr HKCU "Software\Classes\twist" "" "URL:twist Protocol"
+  WriteRegStr HKCU "Software\Classes\twist" "URL Protocol" ""
+  WriteRegStr HKCU "Software\Classes\twist" "DefaultIcon" "$\"$INSTDIR\electrum.ico, 0$\""
+  WriteRegStr HKCU "Software\Classes\twist\shell\open\command" "" "$\"$INSTDIR\electrum-twist.exe$\" $\"%1$\""
 
   ;Adds an uninstaller possibilty to Windows Uninstall or change a program section
   WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
@@ -160,7 +160,7 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\${PRODUCT_NAME}\*.*"
   RMDir  "$SMPROGRAMS\${PRODUCT_NAME}"
   
-  DeleteRegKey HKCU "Software\Classes\stratis"
+  DeleteRegKey HKCU "Software\Classes\twist"
   DeleteRegKey HKCU "Software\${PRODUCT_NAME}"
   DeleteRegKey HKCU "${PRODUCT_UNINST_KEY}"
 SectionEnd

@@ -27,10 +27,10 @@
 import webbrowser
 
 from util import *
-from electrum_stratis.i18n import _
-from electrum_stratis.util import block_explorer_URL, format_satoshis, format_time
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.stratis import is_address
+from electrum_twist.i18n import _
+from electrum_twist.util import block_explorer_URL, format_satoshis, format_time
+from electrum_twist.plugins import run_hook
+from electrum_twist.twist import is_address
 
 
 class AddressList(MyTreeWidget):
@@ -86,7 +86,7 @@ class AddressList(MyTreeWidget):
                         self.setCurrentItem(address_item)
 
     def create_menu(self, position):
-        from electrum_stratis.wallet import Multisig_Wallet
+        from electrum_twist.wallet import Multisig_Wallet
         is_multisig = isinstance(self.wallet, Multisig_Wallet)
         can_delete = self.wallet.can_delete_address()
         selected = self.selectedItems()

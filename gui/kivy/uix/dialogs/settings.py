@@ -3,18 +3,18 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-from electrum_stratis.util import base_units
-from electrum_stratis.i18n import languages
-from electrum_stratis_gui.kivy.i18n import _
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.stratis import RECOMMENDED_FEE
-from electrum_stratis import coinchooser
+from electrum_twist.util import base_units
+from electrum_twist.i18n import languages
+from electrum_twist_gui.kivy.i18n import _
+from electrum_twist.plugins import run_hook
+from electrum_twist.twist import RECOMMENDED_FEE
+from electrum_twist import coinchooser
 
 from choice_dialog import ChoiceDialog
 
 Builder.load_string('''
 #:import partial functools.partial
-#:import _ electrum_stratis_gui.kivy.i18n._
+#:import _ electrum_twist_gui.kivy.i18n._
 
 <SettingsItem@ButtonBehavior+BoxLayout>
     orientation: 'vertical'
@@ -75,13 +75,13 @@ Builder.load_string('''
                 SettingsItem:
                     bu: app.base_unit
                     title: _('Denomination') + ': ' + self.bu
-                    description: _("Base unit for Stratis amounts.")
+                    description: _("Base unit for twist amounts.")
                     action: partial(root.unit_dialog, self)
                 CardSeparator
                 SettingsItem:
                     status: root.fee_status()
                     title: _('Fees') + ': ' + self.status
-                    description: _("Fees paid to the Stratis miners.")
+                    description: _("Fees paid to the twist miners.")
                     action: partial(root.fee_dialog, self)
                 CardSeparator
                 SettingsItem:
@@ -211,7 +211,7 @@ class SettingsDialog(Factory.Popup):
 
     def fee_status(self):
         if self.config.get('dynamic_fees', True):
-            from electrum_stratis.util import fee_levels
+            from electrum_twist.util import fee_levels
             return fee_levels[self.config.get('fee_level', 2)]
         else:
             F = self.config.get('fee_per_kb', RECOMMENDED_FEE)

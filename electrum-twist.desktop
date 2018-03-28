@@ -1,0 +1,16 @@
+# If you want electrum to appear in a linux app launcher ("start menu"), install this by doing:
+# sudo desktop-file-install electrum.desktop
+
+[Desktop Entry]
+Comment=Lightweight twist Client
+Exec=electrum-twist %u
+GenericName[en_US]=Electrum-twist
+GenericName=Electrum-twist
+Icon=electrum-twist
+Name[en_US]=Electrum twist Wallet
+Name=Electrum twist Wallet
+Categories=Network;
+StartupNotify=false
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/twist;

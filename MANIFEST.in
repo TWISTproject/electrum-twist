@@ -1,9 +1,9 @@
 include LICENCE RELEASE-NOTES AUTHORS
 include README.rst
-include electrum-stratis.conf.sample
-include electrum-stratis.desktop
+include electrum-twist.conf.sample
+include electrum-twist.desktop
 include *.py
-include electrum-stratis
+include electrum-twist
 recursive-include lib *.py
 recursive-include gui *.py
 recursive-include plugins *.py

@@ -24,7 +24,7 @@
 # SOFTWARE.
 
 from util import *
-from electrum_stratis.i18n import _
+from electrum_twist.i18n import _
 
 
 class UTXOList(MyTreeWidget):
@@ -55,7 +55,7 @@ class UTXOList(MyTreeWidget):
             self.addChild(utxo_item)
 
     def create_menu(self, position):
-        from electrum_stratis.wallet import Multisig_Wallet
+        from electrum_twist.wallet import Multisig_Wallet
         selected = [ x.data(0, Qt.UserRole).toString() for x in self.selectedItems()]
         if not selected:
             return

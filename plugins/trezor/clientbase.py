@@ -1,10 +1,10 @@
 import time
 from struct import pack
 
-from electrum_stratis.i18n import _
-from electrum_stratis.util import PrintError, UserCancelled
-from electrum_stratis.keystore import bip39_normalize_passphrase
-from electrum_stratis.stratis import EncodeBase58Check
+from electrum_twist.i18n import _
+from electrum_twist.util import PrintError, UserCancelled
+from electrum_twist.keystore import bip39_normalize_passphrase
+from electrum_twist.twist import EncodeBase58Check
 
 
 class GuiMixin(object):
@@ -59,7 +59,7 @@ class GuiMixin(object):
             msg = _("Enter a passphrase to generate this wallet.  Each time "
                     "you use this wallet your %s will prompt you for the "
                     "passphrase.  If you forget the passphrase you cannot "
-                    "access the stratiss in the wallet.") % self.device
+                    "access the twists in the wallet.") % self.device
         else:
             msg = _("Enter the passphrase to unlock this wallet:")
         passphrase = self.handler.get_passphrase(msg, self.creating_wallet)
@@ -157,7 +157,7 @@ class TrezorClientBase(GuiMixin, PrintError):
         return EncodeBase58Check(xpub)
 
     #def address_from_derivation(self, derivation):
-    #    return self.get_address('Stratis', self.expand_path(derivation))
+    #    return self.get_address('twist', self.expand_path(derivation))
 
     def toggle_passphrase(self):
         if self.features.passphrase_protection:

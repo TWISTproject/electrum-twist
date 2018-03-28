@@ -1,4 +1,4 @@
-Electrum-Stratis - Lightweight Stratis client
+Electrum-twist - Lightweight twist client
 ==========================================
 
 ::
@@ -7,7 +7,7 @@ Electrum-Stratis - Lightweight Stratis client
   Original Author: Thomas Voegtlin
   Port Maintainer: dev0tion
   Language: Python
-  Homepage: https://www.stratisplatform.com
+  Homepage: https://www.twistplatform.com
 
 
 
@@ -27,7 +27,7 @@ Electrum from its root directory, without installing it on your
 system; all the python dependencies are included in the 'packages'
 directory. To run Electrum from its root directory, just do::
 
-    ./electrum-stratis
+    ./electrum-twist
 
 You can also install Electrum on your system, by running this command::
 
@@ -47,8 +47,8 @@ Development version
 
 Check out the code from Github::
 
-    git clone git://github.com/stratisproject/electrum-stratis
-    cd electrum-stratis
+    git clone git://github.com/twistproject/electrum-twist
+    cd electrum-twist
 
 Run install (this should install dependencies)::
 
@@ -93,7 +93,7 @@ Mac OS X
     # On Homebrew installs: 
     ARCHFLAGS="-arch i386 -arch x86_64" sudo python setup-release.py py2app --includes sip
     
-    sudo hdiutil create -fs HFS+ -volname "Electrum-Stratis" -srcfolder dist/Electrum-Stratis.app dist/electrum-stratis-VERSION-macosx.dmg
+    sudo hdiutil create -fs HFS+ -volname "Electrum-twist" -srcfolder dist/Electrum-twist.app dist/electrum-twist-VERSION-macosx.dmg
 
 Windows
 -------

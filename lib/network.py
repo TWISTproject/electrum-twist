@@ -37,9 +37,9 @@ import socket
 import json
 
 import util
-import stratis
+import twist
 
-from stratis import *
+from twist import *
 from interface import Connection, Interface
 from blockchain import Blockchain
 from version import ELECTRUM_VERSION, PROTOCOL_VERSION
@@ -47,8 +47,8 @@ from version import ELECTRUM_VERSION, PROTOCOL_VERSION
 DEFAULT_PORTS = {'t':'50001', 's':'50002'}
 
 DEFAULT_SERVERS = {
-    'electrum.stratisplatform.com': DEFAULT_PORTS,
-    'electrum2.stratisplatform.com': DEFAULT_PORTS,
+    'electrum.twistplatform.com': DEFAULT_PORTS,
+    'electrum2.twistplatform.com': DEFAULT_PORTS,
 }
 
 def set_testnet():
@@ -312,7 +312,7 @@ class Network(util.DaemonThread):
         self.queue_request('server.banner', [])
         self.queue_request('server.donation_address', [])
         self.queue_request('server.peers.subscribe', [])
-        for i in stratis.FEE_TARGETS:
+        for i in twist.FEE_TARGETS:
             self.queue_request('blockchain.estimatefee', [i])
         self.queue_request('blockchain.relayfee', [])
 

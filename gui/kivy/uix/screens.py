@@ -17,16 +17,16 @@ from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.utils import platform
 
-from electrum_stratis.util import profiler, parse_URI, format_time, InvalidPassword, NotEnoughFunds
-from electrum_stratis import stratis
-from electrum_stratis.util import timestamp_to_datetime
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+from electrum_twist.util import profiler, parse_URI, format_time, InvalidPassword, NotEnoughFunds
+from electrum_twist import twist
+from electrum_twist.util import timestamp_to_datetime
+from electrum_twist.plugins import run_hook
+from electrum_twist.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
 from context_menu import ContextMenu
 
 
-from electrum_stratis_gui.kivy.i18n import _
+from electrum_twist_gui.kivy.i18n import _
 
 class EmptyLabel(Factory.Label):
     pass
@@ -177,11 +177,11 @@ class SendScreen(CScreen):
     payment_request = None
 
     def set_URI(self, text):
-        import electrum_stratis as electrum
+        import electrum_twist as electrum
         try:
             uri = electrum.util.parse_URI(text, self.app.on_pr)
         except:
-            self.app.show_info(_("Not a Stratis URI"))
+            self.app.show_info(_("Not a twist URI"))
             return
         amount = uri.get('amount')
         self.screen.address = uri.get('address', '')
@@ -219,7 +219,7 @@ class SendScreen(CScreen):
             # it sould be already saved
             return
         # save address as invoice
-        from electrum_stratis.paymentrequest import make_unsigned_request, PaymentRequest
+        from electrum_twist.paymentrequest import make_unsigned_request, PaymentRequest
         req = {'address':self.screen.address, 'memo':self.screen.message}
         amount = self.app.get_amount(self.screen.amount) if self.screen.amount else 0
         req['amount'] = amount
@@ -251,17 +251,17 @@ class SendScreen(CScreen):
         else:
             address = str(self.screen.address)
             if not address:
-                self.app.show_error(_('Recipient not specified.') + ' ' + _('Please scan a Stratis address or a payment request'))
+                self.app.show_error(_('Recipient not specified.') + ' ' + _('Please scan a twist address or a payment request'))
                 return
-            if not stratis.is_address(address):
-                self.app.show_error(_('Invalid Stratis Address') + ':\n' + address)
+            if not twist.is_address(address):
+                self.app.show_error(_('Invalid twist Address') + ':\n' + address)
                 return
             try:
                 amount = self.app.get_amount(self.screen.amount)
             except:
                 self.app.show_error(_('Invalid amount') + ':\n' + self.screen.amount)
                 return
-            outputs = [(stratis.TYPE_ADDRESS, address, amount)]
+            outputs = [(twist.TYPE_ADDRESS, address, amount)]
         message = unicode(self.screen.message)
         amount = sum(map(lambda x:x[2], outputs))
         if self.app.electrum_config.get('use_rbf'):
@@ -353,7 +353,7 @@ class ReceiveScreen(CScreen):
         Clock.schedule_once(lambda dt: self.update_qr())
 
     def get_URI(self):
-        from electrum_stratis.util import create_URI
+        from electrum_twist.util import create_URI
         amount = self.screen.amount
         if amount:
             a, u = self.screen.amount.split()
@@ -369,7 +369,7 @@ class ReceiveScreen(CScreen):
 
     def do_share(self):
         uri = self.get_URI()
-        self.app.do_share(uri, _("Share Stratis Request"))
+        self.app.do_share(uri, _("Share twist Request"))
 
     def do_copy(self):
         uri = self.get_URI()

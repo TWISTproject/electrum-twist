@@ -5,8 +5,8 @@ bin/
 build/
 contrib/pyinstaller/
 dist/
-Electrum-Stratis.egg-info/
-Electrum_Stratis.egg-info/
+Electrum-twist.egg-info/
+Electrum_twist.egg-info/
 env/
 locale/
 packages
@@ -17,3 +17,4 @@ packages
 /electrum.py
 gui/qt/icons_rc.py
 contrib/build-wine/tmp/
+.vscode/settings.json

@@ -2,7 +2,7 @@ import unittest
 import sys
 from ecdsa.util import number_to_string
 
-from lib.stratis import (
+from lib.twist import (
     generator_secp256k1, point_to_ser, public_key_to_bc_address, EC_KEY,
     bip32_root, bip32_public_derivation, bip32_private_derivation, pw_encode,
     pw_decode, Hash, public_key_from_private_key, address_from_private_key,
@@ -15,7 +15,7 @@ except ImportError:
     sys.exit("Error: python-ecdsa does not seem to be installed. Try 'sudo pip install ecdsa'")
 
 
-class Test_stratis(unittest.TestCase):
+class Test_twist(unittest.TestCase):
 
     def test_crypto(self):
         for message in ["Chancellor on brink of second bailout for banks", chr(255)*512]:
@@ -113,7 +113,7 @@ class Test_stratis(unittest.TestCase):
 
     def test_xpub_from_xprv(self):
         """We can derive the xpub key from a xprv."""
-        # Taken from test vectors in https://en.stratis.it/wiki/BIP_0032_TestVectors
+        # Taken from test vectors in https://en.twist.it/wiki/BIP_0032_TestVectors
         xpub = "xpub6H1LXWLaKsWFhvm6RVpEL9P4KfRZSW7abD2ttkWP3SSQvnyA8FSVqNTEcYFgJS2UaFcxupHiYkro49S8yGasTvXEYBVPamhGW6cFJodrTHy"
         xprv = "xprvA41z7zogVVwxVSgdKUHDy1SKmdb533PjDz7J6N6mV6uS3ze1ai8FHa8kmHScGpWmj4WggLyQjgPie1rFSruoUihUZREPSL39UNdE3BBDu76"
 
@@ -152,7 +152,7 @@ class Test_stratis(unittest.TestCase):
 
 class Test_keyImport(unittest.TestCase):
     """ The keys used in this class are TEST keys from
-        https://en.stratis.it/wiki/BIP_0032_TestVectors"""
+        https://en.twist.it/wiki/BIP_0032_TestVectors"""
 
     private_key = "TAD8rebzCEyYBZWCqjsKxeH9YjenLqX55MNgqGyeQkHdN5T7ejYH"
     public_key_hex = "0220d43256bdb32c7517bb0e3f086f54ec351d2299a5808b6a36c7ba434094c8ef"

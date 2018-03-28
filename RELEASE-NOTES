@@ -1,6 +1,6 @@
 # Release 2.7.18
   * Add credentials to JSON-RPC interface
-  * Allow Stratis read only public keys
+  * Allow twist read only public keys
 
 # Release 2.7.17
   * fix a few minor regressions in the Qt GUI

@@ -34,7 +34,7 @@ import ecdsa
 import pbkdf2
 
 from util import print_error
-from stratis import is_old_seed, is_new_seed
+from twist import is_old_seed, is_new_seed
 import version
 import i18n
 

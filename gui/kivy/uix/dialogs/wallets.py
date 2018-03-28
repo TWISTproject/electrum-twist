@@ -3,8 +3,8 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-from electrum_stratis_gui.kivy.i18n import _
-from electrum_stratis.util import base_units
+from electrum_twist_gui.kivy.i18n import _
+from electrum_twist.util import base_units
 
 import os
 from label_dialog import LabelDialog

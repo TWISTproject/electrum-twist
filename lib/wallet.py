@@ -47,14 +47,14 @@ from collections import namedtuple, defaultdict
 from i18n import _
 from util import NotEnoughFunds, PrintError, UserCancelled, profiler
 
-from stratis import *
+from twist import *
 from version import *
 from keystore import load_keystore, Hardware_KeyStore
 from storage import multisig_type
 
 from transaction import Transaction
 from plugins import run_hook
-import stratis
+import twist
 import coinchooser
 from synchronizer import Synchronizer
 from verifier import SPV
@@ -514,7 +514,7 @@ class Abstract_Wallet(PrintError):
         received, sent = self.get_addr_io(address)
         return sum([v for height, v, is_cb in received.values()])
 
-    # return the balance of a stratis address: confirmed and matured, unconfirmed, unmatured
+    # return the balance of a twist address: confirmed and matured, unconfirmed, unmatured
     def get_addr_balance(self, address):
         received, sent = self.get_addr_io(address)
         c = u = x = 0
@@ -805,7 +805,7 @@ class Abstract_Wallet(PrintError):
             _type, data, value = o
             if _type == TYPE_ADDRESS:
                 if not is_address(data):
-                    raise BaseException("Invalid Stratis address:" + data)
+                    raise BaseException("Invalid twist address:" + data)
             if value == '!':
                 if i_max is not None:
                     raise BaseException("More than one output set to spend max")
@@ -1155,7 +1155,7 @@ class Abstract_Wallet(PrintError):
         if not r:
             return
         out = copy.copy(r)
-        out['URI'] = 'stratis:' + addr + '?amount=' + util.format_satoshis(out.get('amount'))
+        out['URI'] = 'twist:' + addr + '?amount=' + util.format_satoshis(out.get('amount'))
         status, conf = self.get_request_status(addr)
         out['status'] = status
         if conf is not None:
@@ -1635,7 +1635,7 @@ class Multisig_Wallet(Deterministic_Wallet):
 
     def pubkeys_to_address(self, pubkeys):
         redeem_script = Transaction.multisig_script(sorted(pubkeys), self.m)
-        address = hash_160_to_bc_address(hash_160(redeem_script.decode('hex')), stratis.ADDRTYPE_P2SH)
+        address = hash_160_to_bc_address(hash_160(redeem_script.decode('hex')), twist.ADDRTYPE_P2SH)
         return address
 
     def new_pubkeys(self, c, i):

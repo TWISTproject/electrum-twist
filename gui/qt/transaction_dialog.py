@@ -32,10 +32,10 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import PyQt4.QtCore as QtCore
 
-from electrum_stratis import transaction
-from electrum_stratis.stratis import base_encode
-from electrum_stratis.i18n import _
-from electrum_stratis.plugins import run_hook
+from electrum_twist import transaction
+from electrum_twist.twist import base_encode
+from electrum_twist.i18n import _
+from electrum_twist.plugins import run_hook
 
 from util import *
 

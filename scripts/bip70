@@ -4,11 +4,11 @@ import tlslite
 import time
 import hashlib
 
-from electrum_stratis.transaction import Transaction
-from electrum_stratis import stratis
-from electrum_stratis import x509
-from electrum_stratis import paymentrequest
-from electrum_stratis import paymentrequest_pb2 as pb2
+from electrum_twist.transaction import Transaction
+from electrum_twist import twist
+from electrum_twist import x509
+from electrum_twist import paymentrequest
+from electrum_twist import paymentrequest_pb2 as pb2
 
 chain_file = 'mychain.pem'
 cert_file = 'mycert.pem'

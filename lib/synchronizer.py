@@ -27,7 +27,7 @@
 from threading import Lock
 import hashlib
 
-from stratis import Hash, hash_encode
+from twist import Hash, hash_encode
 from transaction import Transaction
 from util import print_error, print_msg, ThreadJob
 

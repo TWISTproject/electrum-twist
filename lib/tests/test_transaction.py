@@ -1,6 +1,6 @@
 import unittest
 from lib import transaction
-from lib.stratis import TYPE_ADDRESS
+from lib.twist import TYPE_ADDRESS
 
 import pprint
 from lib.keystore import xpubkey_to_address

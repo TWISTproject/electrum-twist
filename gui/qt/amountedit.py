@@ -4,7 +4,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from decimal import Decimal
-from electrum_stratis.util import format_satoshis_plain
+from electrum_twist.util import format_satoshis_plain
 
 class MyLineEdit(QLineEdit):
     frozen = pyqtSignal()
@@ -78,11 +78,11 @@ class BTCAmountEdit(AmountEdit):
         p = self.decimal_point()
         assert p in [2, 5, 8]
         if p == 8:
-            return 'STRAT'
+            return 'TWIST'
         if p == 5:
-            return 'mSTRAT'
+            return 'mTWIST'
         if p == 2:
-            return 'uSTRAT'
+            return 'uTWIST'
         raise Exception('Unknown base unit')
 
     def get_amount(self):

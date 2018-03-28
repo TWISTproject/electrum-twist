@@ -1,6 +1,6 @@
-import select, time, electrum_stratis as electrum, Queue
-from electrum_stratis import Connection, Interface, SimpleConfig
-from electrum_stratis.network import filter_protocol, parse_servers
+import select, time, electrum_twist as electrum, Queue
+from electrum_twist import Connection, Interface, SimpleConfig
+from electrum_twist.network import filter_protocol, parse_servers
 from collections import defaultdict
 
 # electrum.util.set_verbosity(1)
@@ -47,7 +47,7 @@ def wait_on_interfaces(interfaces, timeout=10):
 def get_peers():
     peers = []
     # 1. get connected interfaces
-    server = 'electrum.stratisplatform.com:50002:s'
+    server = 'electrum.twistplatform.com:50002:s'
     interfaces = get_interfaces([server])
     if not interfaces:
         print "No connection to", server

@@ -1,5 +1,5 @@
 from labels import LabelsPlugin
-from electrum_stratis.plugins import hook
+from electrum_twist.plugins import hook
 
 class Plugin(LabelsPlugin):
 

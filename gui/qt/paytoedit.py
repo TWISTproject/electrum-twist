@@ -29,7 +29,7 @@ from qrtextedit import ScanQRTextEdit
 
 import re
 from decimal import Decimal
-from electrum_stratis import stratis
+from electrum_twist import twist
 
 import util
 
@@ -81,13 +81,13 @@ class PayToEdit(ScanQRTextEdit):
     def parse_output(self, x):
         try:
             address = self.parse_address(x)
-            return stratis.TYPE_ADDRESS, address
+            return twist.TYPE_ADDRESS, address
         except:
             script = self.parse_script(x)
-            return stratis.TYPE_SCRIPT, script
+            return twist.TYPE_SCRIPT, script
 
     def parse_script(self, x):
-        from electrum_stratis.transaction import opcodes, push_script
+        from electrum_twist.transaction import opcodes, push_script
         script = ''
         for word in x.split():
             if word[0:3] == 'OP_':
@@ -107,7 +107,7 @@ class PayToEdit(ScanQRTextEdit):
         r = line.strip()
         m = re.match('^'+RE_ALIAS+'$', r)
         address = str(m.group(2) if m else r)
-        assert stratis.is_address(address)
+        assert twist.is_address(address)
         return address
 
     def check_text(self):
@@ -121,7 +121,7 @@ class PayToEdit(ScanQRTextEdit):
         self.payto_address = None
         if len(lines) == 1:
             data = lines[0]
-            if data.startswith("stratis:"):
+            if data.startswith("twist:"):
                 self.scan_f(data)
                 return
             try:
@@ -259,7 +259,7 @@ class PayToEdit(ScanQRTextEdit):
 
     def qr_input(self):
         data = super(PayToEdit,self).qr_input()
-        if data.startswith("stratis:"):
+        if data.startswith("twist:"):
             self.scan_f(data)
             # TODO: update fee
 

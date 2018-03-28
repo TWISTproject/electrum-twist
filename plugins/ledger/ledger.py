@@ -5,13 +5,13 @@ import time
 import sys
 import traceback
 
-import electrum_stratis as electrum
-from electrum_stratis.stratis import EncodeBase58Check, DecodeBase58Check, bc_address_to_hash_160, hash_160_to_bc_address, TYPE_ADDRESS, int_to_hex, var_int
-from electrum_stratis.i18n import _
-from electrum_stratis.plugins import BasePlugin, hook
-from electrum_stratis.keystore import Hardware_KeyStore, parse_xpubkey
+import electrum_twist as electrum
+from electrum_twist.twist import EncodeBase58Check, DecodeBase58Check, bc_address_to_hash_160, hash_160_to_bc_address, TYPE_ADDRESS, int_to_hex, var_int
+from electrum_twist.i18n import _
+from electrum_twist.plugins import BasePlugin, hook
+from electrum_twist.keystore import Hardware_KeyStore, parse_xpubkey
 from ..hw_wallet import HW_PluginBase
-from electrum_stratis.util import format_satoshis_plain, print_error
+from electrum_twist.util import format_satoshis_plain, print_error
 
 
 try:

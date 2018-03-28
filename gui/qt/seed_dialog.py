@@ -25,7 +25,7 @@
 
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from electrum_stratis.i18n import _
+from electrum_twist.i18n import _
 
 from util import *
 from qrtextedit import ShowQRTextEdit, ScanQRTextEdit
@@ -66,7 +66,7 @@ class SeedLayout(QVBoxLayout):
                         '<b>' + _('Warning') + '</b>' + ': ',
                         _('BIP39 seeds may not be supported in the future.'),
                         '<br/><br/>',
-                        _('As technology matures, Stratis address generation may change.'),
+                        _('As technology matures, twist address generation may change.'),
                         _('However, BIP39 seeds do not include a version number.'),
                         _('As a result, it is not possible to infer your wallet type from a BIP39 seed.'),
                         '<br/><br/>',
@@ -137,7 +137,7 @@ class SeedLayout(QVBoxLayout):
         return ' '.join(text.split())
 
     def on_edit(self):
-        from electrum_stratis.stratis import seed_type
+        from electrum_twist.twist import seed_type
         s = self.get_seed()
         b = self.is_seed(s)
         t = seed_type(s)

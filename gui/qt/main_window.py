@@ -41,18 +41,18 @@ import PyQt4.QtCore as QtCore
 
 import icons_rc
 
-from electrum_stratis import keystore
-from electrum_stratis.stratis import COIN, is_valid, TYPE_ADDRESS
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.i18n import _
-from electrum_stratis.util import (block_explorer, block_explorer_info, format_time,
+from electrum_twist import keystore
+from electrum_twist.twist import COIN, is_valid, TYPE_ADDRESS
+from electrum_twist.plugins import run_hook
+from electrum_twist.i18n import _
+from electrum_twist.util import (block_explorer, block_explorer_info, format_time,
                                block_explorer_URL, format_satoshis, PrintError,
                                format_satoshis_plain, NotEnoughFunds, StoreDict,
                                UserCancelled)
-from electrum_stratis import Transaction, mnemonic
-from electrum_stratis import util, stratis, commands, coinchooser
-from electrum_stratis import SimpleConfig, paymentrequest
-from electrum_stratis.wallet import Wallet, Multisig_Wallet
+from electrum_twist import Transaction, mnemonic
+from electrum_twist import util, twist, commands, coinchooser
+from electrum_twist import SimpleConfig, paymentrequest
+from electrum_twist.wallet import Wallet, Multisig_Wallet
 
 from amountedit import AmountEdit, BTCAmountEdit, MyLineEdit, BTCkBEdit
 from network_dialog import NetworkDialog
@@ -62,7 +62,7 @@ from transaction_dialog import show_transaction
 from fee_slider import FeeSlider
 
 
-from electrum_stratis import ELECTRUM_VERSION
+from electrum_twist import ELECTRUM_VERSION
 import re
 
 from util import *
@@ -87,7 +87,7 @@ class StatusBarButton(QPushButton):
             self.func()
 
 
-from electrum_stratis.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+from electrum_twist.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
 
 class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
@@ -140,7 +140,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         if self.config.get("is_maximized"):
             self.showMaximized()
 
-        self.setWindowIcon(QIcon(":icons/electrum-stratis.png"))
+        self.setWindowIcon(QIcon(":icons/electrum-twist.png"))
         self.init_menubar()
 
         wrtabs = weakref.proxy(tabs)
@@ -336,7 +336,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             self.setGeometry(100, 100, 840, 400)
 
     def watching_only_changed(self):
-        title = 'Electrum Stratis %s  -  %s' % (self.wallet.electrum_version,
+        title = 'Electrum twist %s  -  %s' % (self.wallet.electrum_version,
                                             self.wallet.basename())
         extra = [self.wallet.storage.get('wallet_type', '?')]
         if self.wallet.is_watching_only():
@@ -353,8 +353,8 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         if self.wallet.is_watching_only():
             msg = ' '.join([
                 _("This wallet is watching-only."),
-                _("This means you will not be able to spend stratiss with it."),
-                _("Make sure you own the seed phrase or the private keys, before you request stratiss to be sent to this wallet.")
+                _("This means you will not be able to spend twists with it."),
+                _("Make sure you own the seed phrase or the private keys, before you request twists to be sent to this wallet.")
             ])
             self.show_warning(msg, title=_('Information'))
 
@@ -474,7 +474,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         help_menu = menubar.addMenu(_("&Help"))
         help_menu.addAction(_("&About"), self.show_about)
-        help_menu.addAction(_("&Official website"), lambda: webbrowser.open("http://stratisplatform.com"))
+        help_menu.addAction(_("&Official website"), lambda: webbrowser.open("http://twistplatform.com"))
         help_menu.addSeparator()
         help_menu.addAction(_("&Documentation"), lambda: webbrowser.open("http://docs.electrum.org/")).setShortcut(QKeySequence.HelpContents)
         help_menu.addAction(_("&Report Bug"), self.show_report_bug)
@@ -487,22 +487,22 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         d = self.network.get_donation_address()
         if d:
             host = self.network.get_parameters()[0]
-            self.pay_to_URI('stratis:%s?message=donation for %s'%(d, host))
+            self.pay_to_URI('twist:%s?message=donation for %s'%(d, host))
         else:
             self.show_error(_('No donation address for this server'))
 
     def show_about(self):
-        QMessageBox.about(self, "Electrum Stratis",
-            _("Version")+" %s" % (self.wallet.electrum_version) + "\n\n" + _("Electrum's focus is speed, with low resource usage and simplifying Stratis. You do not need to perform regular backups, because your wallet can be recovered from a secret phrase that you can memorize or write on paper. Startup times are instant because it operates in conjunction with high-performance servers that handle the most complicated parts of the Stratis system."))
+        QMessageBox.about(self, "Electrum twist",
+            _("Version")+" %s" % (self.wallet.electrum_version) + "\n\n" + _("Electrum's focus is speed, with low resource usage and simplifying twist. You do not need to perform regular backups, because your wallet can be recovered from a secret phrase that you can memorize or write on paper. Startup times are instant because it operates in conjunction with high-performance servers that handle the most complicated parts of the twist system."))
 
     def show_report_bug(self):
         msg = ' '.join([
             _("Please report any bugs as issues on github:<br/>"),
-            "<a href=\"https://github.com/stratisproject/electrum-stratis/issues\">https://github.com/stratisproject/electrum-stratis/issues</a><br/><br/>",
+            "<a href=\"https://github.com/twistproject/electrum-twist/issues\">https://github.com/twistproject/electrum-twist/issues</a><br/><br/>",
             _("Before reporting a bug, upgrade to the most recent version of Electrum (latest release or git HEAD), and include the version number in your report."),
             _("Try to explain not only what the bug is, but how it occurs.")
          ])
-        self.show_message(msg, title="Electrum Stratis - " + _("Reporting Bugs"))
+        self.show_message(msg, title="Electrum twist - " + _("Reporting Bugs"))
 
     def notify_transactions(self):
         if not self.network or not self.network.is_connected():
@@ -530,7 +530,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
     def notify(self, message):
         if self.tray:
-            self.tray.showMessage("Electrum Stratis", message, QSystemTrayIcon.Information, 20000)
+            self.tray.showMessage("Electrum twist", message, QSystemTrayIcon.Information, 20000)
 
 
 
@@ -581,11 +581,11 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
     def base_unit(self):
         assert self.decimal_point in [2, 5, 8]
         if self.decimal_point == 2:
-            return 'uSTRAT'
+            return 'uTWIST'
         if self.decimal_point == 5:
-            return 'mSTRAT'
+            return 'mTWIST'
         if self.decimal_point == 8:
-            return 'STRAT'
+            return 'TWIST'
         raise Exception('Unknown base unit')
 
     def connect_fields(self, window, btc_e, fiat_e, fee_e):
@@ -704,7 +704,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.receive_address_e = ButtonsLineEdit()
         self.receive_address_e.addCopyButton(self.app)
         self.receive_address_e.setReadOnly(True)
-        msg = _('Stratis address where the payment should be received. Note that each payment request uses a different Stratis address.')
+        msg = _('twist address where the payment should be received. Note that each payment request uses a different twist address.')
         self.receive_address_label = HelpLabel(_('Receiving address'), msg)
         self.receive_address_e.textChanged.connect(self.update_receive_qr)
         self.receive_address_e.setFocusPolicy(Qt.NoFocus)
@@ -734,8 +734,8 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         msg = ' '.join([
             _('Expiration date of your request.'),
             _('This information is seen by the recipient if you send them a signed payment request.'),
-            _('Expired requests have to be deleted manually from your list, in order to free the corresponding Stratis addresses.'),
-            _('The Stratis address never expires and will always be part of this Electrum wallet.'),
+            _('Expired requests have to be deleted manually from your list, in order to free the corresponding twist addresses.'),
+            _('The twist address never expires and will always be part of this Electrum wallet.'),
         ])
         grid.addWidget(HelpLabel(_('Request expires'), msg), 3, 0)
         grid.addWidget(self.expires_combo, 3, 1)
@@ -803,7 +803,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             URI += "&exp=%d"%req.get('exp')
         if req.get('name') and req.get('sig'):
             sig = req.get('sig').decode('hex')
-            sig = stratis.base_encode(sig, base=58)
+            sig = twist.base_encode(sig, base=58)
             URI += "&name=" + req['name'] + "&sig="+sig
         return str(URI)
 
@@ -871,7 +871,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
     def new_payment_request(self):
         addr = self.wallet.get_unused_address()
         if addr is None:
-            from electrum_stratis.wallet import Imported_Wallet
+            from electrum_twist.wallet import Imported_Wallet
             if not self.wallet.is_deterministic():
                 msg = [
                     _('No more addresses in your wallet.'),
@@ -919,7 +919,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
 
     def receive_at(self, addr):
-        if not stratis.is_address(addr):
+        if not twist.is_address(addr):
             return
         self.tabs.setCurrentIndex(2)
         self.receive_address_e.setText(addr)
@@ -946,7 +946,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         self.amount_e = BTCAmountEdit(self.get_decimal_point)
         self.payto_e = PayToEdit(self)
         msg = _('Recipient of the funds.') + '\n\n'\
-              + _('You may enter a Stratis address, a label from your list of contacts (a list of completions will be proposed), or an alias (email-like address that forwards to a Stratis address)')
+              + _('You may enter a twist address, a label from your list of contacts (a list of completions will be proposed), or an alias (email-like address that forwards to a twist address)')
         payto_label = HelpLabel(_('Pay to'), msg)
         grid.addWidget(payto_label, 1, 0)
         grid.addWidget(self.payto_e, 1, 1, 1, -1)
@@ -993,7 +993,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         hbox.addStretch(1)
         grid.addLayout(hbox, 4, 4)
 
-        msg = _('Stratis transactions are in general not free. A transaction fee is paid by the sender of the funds.') + '\n\n'\
+        msg = _('twist transactions are in general not free. A transaction fee is paid by the sender of the funds.') + '\n\n'\
               + _('The amount of fee can be decided freely by the sender. However, transactions with low fees take more time to be processed.') + '\n\n'\
               + _('A suggested fee is automatically added to this field. You may override it. The suggested fee increases with the size of the transaction.')
         self.fee_e_label = HelpLabel(_('Fee'), msg)
@@ -1221,10 +1221,10 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         for _type, addr, amount in outputs:
             if addr is None:
-                self.show_error(_('Stratis Address is None'))
+                self.show_error(_('twist Address is None'))
                 return
-            if _type == TYPE_ADDRESS and not stratis.is_address(addr):
-                self.show_error(_('Invalid Stratis Address'))
+            if _type == TYPE_ADDRESS and not twist.is_address(addr):
+                self.show_error(_('Invalid twist Address'))
                 return
             if amount is None:
                 self.show_error(_('Invalid Amount'))
@@ -1433,7 +1433,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         try:
             out = util.parse_URI(unicode(URI), self.on_pr)
         except BaseException as e:
-            self.show_error(_('Invalid stratis URI:') + '\n' + str(e))
+            self.show_error(_('Invalid twist URI:') + '\n' + str(e))
             return
         self.tabs.setCurrentIndex(1)
         r = out.get('r')
@@ -1621,7 +1621,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
                                  'network' : self.network,
                                  'plugins' : self.gui_object.plugins,
                                  'window': self})
-        console.updateNamespace({'util' : util, 'stratis':stratis})
+        console.updateNamespace({'util' : util, 'twist':twist})
 
         c = commands.Commands(self.config, self.wallet, self.network, lambda: self.console.set_json(True))
         methods = {}
@@ -1844,7 +1844,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         try:
             # This can throw on invalid base64
             sig = base64.b64decode(str(signature.toPlainText()))
-            verified = stratis.verify_message(address.text(), sig, message)
+            verified = twist.verify_message(address.text(), sig, message)
         except:
             verified = False
         if verified:
@@ -1901,7 +1901,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         message = unicode(message_e.toPlainText())
         message = message.encode('utf-8')
         try:
-            encrypted = stratis.encrypt_message(message, str(pubkey_e.text()))
+            encrypted = twist.encrypt_message(message, str(pubkey_e.text()))
             encrypted_e.setText(encrypted)
         except BaseException as e:
             traceback.print_exc(file=sys.stdout)
@@ -1970,7 +1970,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
 
     def tx_from_text(self, txt):
-        from electrum_stratis.transaction import tx_from_str, Transaction
+        from electrum_twist.transaction import tx_from_str, Transaction
         try:
             tx = tx_from_str(txt)
             return Transaction(tx)
@@ -1980,7 +1980,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             return
 
     def read_tx_from_qrcode(self):
-        from electrum_stratis import qrscanner
+        from electrum_twist import qrscanner
         try:
             data = qrscanner.scan_qr(self.config)
         except BaseException as e:
@@ -1988,14 +1988,14 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             return
         if not data:
             return
-        # if the user scanned a stratis URI
-        if data.startswith("stratis:"):
+        # if the user scanned a twist URI
+        if data.startswith("twist:"):
             self.pay_to_URI(data)
             return
         # else if the user scanned an offline signed tx
         # transactions are binary, but qrcode seems to return utf8...
         data = data.decode('utf8')
-        z = stratis.base_decode(data, length=None, base=43)
+        z = twist.base_decode(data, length=None, base=43)
         data = ''.join(chr(ord(b)) for b in z).encode('hex')
         tx = self.tx_from_text(data)
         if not tx:
@@ -2028,7 +2028,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
             self.show_transaction(tx)
 
     def do_process_from_txid(self):
-        from electrum_stratis import transaction
+        from electrum_twist import transaction
         txid, ok = QInputDialog.getText(self, _('Lookup transaction'), _('Transaction ID') + ':')
         if ok and txid:
             txid = str(txid).strip()
@@ -2059,7 +2059,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         e.setReadOnly(True)
         vbox.addWidget(e)
 
-        defaultname = 'electrum-stratis-private-keys.csv'
+        defaultname = 'electrum-twist-private-keys.csv'
         select_msg = _('Select file to export your private keys to')
         hbox, filename_e, csv_button = filename_field(self, self.config, defaultname, select_msg)
         vbox.addLayout(hbox)
@@ -2142,7 +2142,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
     def do_export_labels(self):
         labels = self.wallet.labels
         try:
-            fileName = self.getSaveFileName(_("Select file to save your labels"), 'electrum-stratis_labels.json', "*.json")
+            fileName = self.getSaveFileName(_("Select file to save your labels"), 'electrum-twist_labels.json', "*.json")
             if fileName:
                 with open(fileName, 'w+') as f:
                     json.dump(labels, f, indent=4, sort_keys=True)
@@ -2155,7 +2155,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         d = WindowModalDialog(self, _('Export History'))
         d.setMinimumSize(400, 200)
         vbox = QVBoxLayout(d)
-        defaultname = os.path.expanduser('~/electrum-stratis-history.csv')
+        defaultname = os.path.expanduser('~/electrum-twist-history.csv')
         select_msg = _('Select file to export your wallet transactions to')
         hbox, filename_e, csv_button = filename_field(self, self.config, defaultname, select_msg)
         vbox.addLayout(hbox)
@@ -2179,7 +2179,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
     def plot_history_dialog(self):
         try:
-            from electrum_stratis.plot import plot_history
+            from electrum_twist.plot import plot_history
         except ImportError as e:
             self.show_error(str(e))
             return
@@ -2251,7 +2251,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         def get_address():
             addr = str(address_e.text()).strip()
-            if stratis.is_address(addr):
+            if twist.is_address(addr):
                 return addr
 
         def get_pk():
@@ -2328,7 +2328,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         lang_help = _('Select which language is used in the GUI (after restart).')
         lang_label = HelpLabel(_('Language') + ':', lang_help)
         lang_combo = QComboBox()
-        from electrum_stratis.i18n import languages
+        from electrum_twist.i18n import languages
         lang_combo.addItems(languages.values())
         try:
             index = languages.keys().index(self.config.get("language",''))
@@ -2444,9 +2444,9 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         SSL_id_e.setReadOnly(True)
         id_widgets.append((SSL_id_label, SSL_id_e))
 
-        units = ['STRAT', 'mSTRAT', 'uSTRAT']
+        units = ['TWIST', 'mTWIST', 'uTWIST']
         msg = _('Base unit of your wallet.')\
-              + '\n1STRAT=1000mSTRAT.\n' \
+              + '\n1TWIST=1000mTWIST.\n' \
               + _(' These settings affects the fields in the Send tab')+' '
         unit_label = HelpLabel(_('Base unit') + ':', msg)
         unit_combo = QComboBox()
@@ -2458,11 +2458,11 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
                 return
             edits = self.amount_e, self.fee_e, self.receive_amount_e
             amounts = [edit.get_amount() for edit in edits]
-            if unit_result == 'STRAT':
+            if unit_result == 'TWIST':
                 self.decimal_point = 8
-            elif unit_result == 'mSTRAT':
+            elif unit_result == 'mTWIST':
                 self.decimal_point = 5
-            elif unit_result == 'uSTRAT':
+            elif unit_result == 'uTWIST':
                 self.decimal_point = 2
             else:
                 raise Exception('Unknown base unit')
@@ -2488,7 +2488,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         block_ex_combo.currentIndexChanged.connect(on_be)
         gui_widgets.append((block_ex_label, block_ex_combo))
 
-        from electrum_stratis import qrscanner
+        from electrum_twist import qrscanner
         system_cameras = qrscanner._find_system_cameras()
         qr_combo = QComboBox()
         qr_combo.addItem("Default","default")

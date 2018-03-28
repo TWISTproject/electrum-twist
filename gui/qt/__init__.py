@@ -36,15 +36,15 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 import PyQt4.QtCore as QtCore
 
-from electrum_stratis.i18n import _, set_language
-from electrum_stratis.plugins import run_hook
-from electrum_stratis import SimpleConfig, Wallet, WalletStorage
-from electrum_stratis.paymentrequest import InvoiceStore
-from electrum_stratis.contacts import Contacts
-from electrum_stratis.synchronizer import Synchronizer
-from electrum_stratis.verifier import SPV
-from electrum_stratis.util import DebugMem, UserCancelled
-from electrum_stratis.wallet import Abstract_Wallet
+from electrum_twist.i18n import _, set_language
+from electrum_twist.plugins import run_hook
+from electrum_twist import SimpleConfig, Wallet, WalletStorage
+from electrum_twist.paymentrequest import InvoiceStore
+from electrum_twist.contacts import Contacts
+from electrum_twist.synchronizer import Synchronizer
+from electrum_twist.verifier import SPV
+from electrum_twist.util import DebugMem, UserCancelled
+from electrum_twist.wallet import Abstract_Wallet
 from installwizard import InstallWizard, GoBack
 
 
@@ -95,7 +95,7 @@ class ElectrumGui:
         # init tray
         self.dark_icon = self.config.get("dark_icon", False)
         self.tray = QSystemTrayIcon(self.tray_icon(), None)
-        self.tray.setToolTip('Electrum-Stratis')
+        self.tray.setToolTip('Electrum-twist')
         self.tray.activated.connect(self.tray_activated)
         self.build_tray_menu()
         self.tray.show()
@@ -112,7 +112,7 @@ class ElectrumGui:
             submenu.addAction(_("Close"), window.close)
         #m.addAction(_("Dark/Light"), self.toggle_tray_icon)
         m.addSeparator()
-        m.addAction(_("Exit Electrum-Stratis"), self.close)
+        m.addAction(_("Exit Electrum-twist"), self.close)
         self.tray.setContextMenu(m)
 
     def tray_icon(self):

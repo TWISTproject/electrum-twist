@@ -1716,7 +1716,7 @@ stone
 stool
 story
 stove
-strategy
+TWISTegy
 street
 strike
 strong

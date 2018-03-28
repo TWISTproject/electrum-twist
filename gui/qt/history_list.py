@@ -27,10 +27,10 @@
 import webbrowser
 
 from util import *
-from electrum_stratis.i18n import _
-from electrum_stratis.util import block_explorer_URL, format_satoshis, format_time
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.util import timestamp_to_datetime, profiler
+from electrum_twist.i18n import _
+from electrum_twist.util import block_explorer_URL, format_satoshis, format_time
+from electrum_twist.plugins import run_hook
+from electrum_twist.util import timestamp_to_datetime, profiler
 
 
 TX_ICONS = [

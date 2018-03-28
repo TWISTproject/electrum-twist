@@ -28,12 +28,12 @@ if platform.system() in ['Linux', 'FreeBSD', 'DragonFly']:
         else:
             usr_share = os.path.expanduser('~/.local/share')
     data_files += [
-        (os.path.join(usr_share, 'applications/'), ['electrum-stratis.desktop']),
-        (os.path.join(usr_share, 'pixmaps/'), ['icons/electrum-stratis.png'])
+        (os.path.join(usr_share, 'applications/'), ['electrum-twist.desktop']),
+        (os.path.join(usr_share, 'pixmaps/'), ['icons/electrum-twist.png'])
     ]
 
 setup(
-    name="Electrum-Stratis",
+    name="Electrum-twist",
     version=version.ELECTRUM_VERSION,
     install_requires=[
         'slowaes>=0.1a1',
@@ -46,39 +46,39 @@ setup(
         'jsonrpclib',
     ],
     packages=[
-        'electrum_stratis',
-        'electrum_stratis_gui',
-        'electrum_stratis_gui.qt',
-        'electrum_stratis_plugins',
-        'electrum_stratis_plugins.audio_modem',
-        'electrum_stratis_plugins.cosigner_pool',
-        'electrum_stratis_plugins.email_requests',
-        'electrum_stratis_plugins.exchange_rate',
-        'electrum_stratis_plugins.hw_wallet',
-        'electrum_stratis_plugins.keepkey',
-        'electrum_stratis_plugins.labels',
-        'electrum_stratis_plugins.ledger',
-        'electrum_stratis_plugins.plot',
-        'electrum_stratis_plugins.trezor',
-        'electrum_stratis_plugins.virtualkeyboard',
+        'electrum_twist',
+        'electrum_twist_gui',
+        'electrum_twist_gui.qt',
+        'electrum_twist_plugins',
+        'electrum_twist_plugins.audio_modem',
+        'electrum_twist_plugins.cosigner_pool',
+        'electrum_twist_plugins.email_requests',
+        'electrum_twist_plugins.exchange_rate',
+        'electrum_twist_plugins.hw_wallet',
+        'electrum_twist_plugins.keepkey',
+        'electrum_twist_plugins.labels',
+        'electrum_twist_plugins.ledger',
+        'electrum_twist_plugins.plot',
+        'electrum_twist_plugins.trezor',
+        'electrum_twist_plugins.virtualkeyboard',
     ],
     package_dir={
-        'electrum_stratis': 'lib',
-        'electrum_stratis_gui': 'gui',
-        'electrum_stratis_plugins': 'plugins',
+        'electrum_twist': 'lib',
+        'electrum_twist_gui': 'gui',
+        'electrum_twist_plugins': 'plugins',
     },
     package_data={
-        'electrum_stratis': [
+        'electrum_twist': [
             'www/index.html',
             'wordlist/*.txt',
             'locale/*/LC_MESSAGES/electrum.mo',
         ]
     },
-    scripts=['electrum-stratis'],
+    scripts=['electrum-twist'],
     data_files=data_files,
-    description="Lightweight Stratis Wallet",
-    author="dev0tion",
+    description="Lightweight twist Wallet",
+    author="TWISTproject",
     license="MIT Licence",
-    url="http://www.stratisplatform.com",
-    long_description="""Lightweight Stratis Wallet"""
+    url="https://twist.network",
+    long_description="""Lightweight twist Wallet"""
 )

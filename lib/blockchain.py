@@ -27,8 +27,8 @@
 
 import os
 import util
-import stratis
-from stratis import *
+import twist
+from twist import *
 
 MAX_TARGET = 0x00000000FFFF0000000000000000000000000000000000000000000000000000
 
@@ -114,8 +114,8 @@ class Blockchain(util.PrintError):
         try:
             import urllib, socket
             socket.setdefaulttimeout(30)
-            self.print_error("downloading ", stratis.HEADERS_URL)
-            urllib.urlretrieve(stratis.HEADERS_URL, filename + '.tmp')
+            self.print_error("downloading ", twist.HEADERS_URL)
+            urllib.urlretrieve(twist.HEADERS_URL, filename + '.tmp')
             os.rename(filename + '.tmp', filename)
             self.print_error("done.")
         except Exception:

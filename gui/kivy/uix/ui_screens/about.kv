@@ -1,7 +1,7 @@
-#:import VERSION electrum_stratis.version.ELECTRUM_VERSION
+#:import VERSION electrum_twist.version.ELECTRUM_VERSION
 
 Popup:
-    title: _("About Electrum-Stratis")
+    title: _("About Electrum-twist")
     BoxLayout:
         orientation: 'vertical'
         spacing: '10dp'
@@ -26,10 +26,10 @@ Popup:
                 size_hint_x: 0.4
             TopLabel:
                 markup: True
-                text: '[color=6666ff][ref=x]http://stratisplatform.com[/ref][/color]'
+                text: '[color=6666ff][ref=x]http://twistplatform.com[/ref][/color]'
                 on_ref_press:
                     import webbrowser
-                    webbrowser.open("http://stratisplatform.com")
+                    webbrowser.open("http://twistplatform.com")
                 size_hint_x: 0.6
             TopLabel:
                 text: _('Developers')
@@ -38,7 +38,7 @@ Popup:
                 text: '\n'.join(['Thomas Voegtlin', 'Neil Booth', 'Akshay Arora', 'dev0tion'])
                 size_hint_x: 0.6
         TopLabel:
-            text: _('Distributed by Stratis')
+            text: _('Distributed by twist')
             padding: '0dp', '20dp'
         Widget:
             size_hint: None, 0.5

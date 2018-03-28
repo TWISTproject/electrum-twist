@@ -1,4 +1,4 @@
-from electrum_stratis.i18n import _
+from electrum_twist.i18n import _
 
 fullname = _('LabelSync')
 description = ' '.join([

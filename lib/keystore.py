@@ -28,12 +28,12 @@
 from unicodedata import normalize
 
 from version import *
-import stratis
-from stratis import pw_encode, pw_decode, bip32_root, bip32_private_derivation, bip32_public_derivation, bip32_private_key, deserialize_xkey
-from stratis import public_key_from_private_key, public_key_to_bc_address
-from stratis import *
+import twist
+from twist import pw_encode, pw_decode, bip32_root, bip32_private_derivation, bip32_public_derivation, bip32_private_key, deserialize_xkey
+from twist import public_key_from_private_key, public_key_to_bc_address
+from twist import *
 
-from stratis import is_old_seed, is_new_seed, is_seed
+from twist import is_old_seed, is_new_seed, is_seed
 from util import PrintError, InvalidPassword
 from mnemonic import Mnemonic
 
@@ -247,19 +247,19 @@ class Xpub:
         return cK.encode('hex')
 
     def get_xpubkey(self, c, i):
-        s = ''.join(map(lambda x: stratis.int_to_hex(x,2), (c, i)))
-        return 'ff' + stratis.DecodeBase58Check(self.xpub).encode('hex') + s
+        s = ''.join(map(lambda x: twist.int_to_hex(x,2), (c, i)))
+        return 'ff' + twist.DecodeBase58Check(self.xpub).encode('hex') + s
 
     @classmethod
     def parse_xpubkey(self, pubkey):
         assert pubkey[0:2] == 'ff'
         pk = pubkey.decode('hex')
         pk = pk[1:]
-        xkey = stratis.EncodeBase58Check(pk[0:78])
+        xkey = twist.EncodeBase58Check(pk[0:78])
         dd = pk[78:]
         s = []
         while dd:
-            n = int(stratis.rev_hex(dd[0:2].encode('hex')), 16)
+            n = int(twist.rev_hex(dd[0:2].encode('hex')), 16)
             dd = dd[2:]
             s.append(n)
         assert len(s) == 2
@@ -320,7 +320,7 @@ class BIP32_KeyStore(Deterministic_KeyStore, Xpub):
 
     def add_xprv(self, xprv):
         self.xprv = xprv
-        self.xpub = stratis.xpub_from_xprv(xprv)
+        self.xpub = twist.xpub_from_xprv(xprv)
 
     def add_xprv_from_seed(self, bip32_seed, derivation):
         xprv, xpub = bip32_root(bip32_seed)
@@ -443,7 +443,7 @@ class Old_KeyStore(Deterministic_KeyStore):
         return self.mpk
 
     def get_xpubkey(self, for_change, n):
-        s = ''.join(map(lambda x: stratis.int_to_hex(x,2), (for_change, n)))
+        s = ''.join(map(lambda x: twist.int_to_hex(x,2), (for_change, n)))
         return 'fe' + self.mpk + s
 
     @classmethod
@@ -454,7 +454,7 @@ class Old_KeyStore(Deterministic_KeyStore):
         dd = pk[128:]
         s = []
         while dd:
-            n = int(stratis.rev_hex(dd[0:4]), 16)
+            n = int(twist.rev_hex(dd[0:4]), 16)
             dd = dd[4:]
             s.append(n)
         assert len(s) == 2
@@ -642,13 +642,13 @@ def is_xprv(text):
 
 def is_address_list(text):
     parts = text.split()
-    return bool(parts) and all(stratis.is_address(x) for x in parts)
+    return bool(parts) and all(twist.is_address(x) for x in parts)
 
 def get_private_keys(text):
     parts = text.split('\n')
     parts = map(lambda x: ''.join(x.split()), parts)
     parts = filter(bool, parts)
-    if bool(parts) and all(stratis.is_private_key(x) for x in parts):
+    if bool(parts) and all(twist.is_private_key(x) for x in parts):
         return parts
 
 def is_private_key_list(text):
@@ -692,7 +692,7 @@ def from_xpub(xpub):
     return k
 
 def from_xprv(xprv):
-    xpub = stratis.xpub_from_xprv(xprv)
+    xpub = twist.xpub_from_xprv(xprv)
     k = BIP32_KeyStore({})
     k.xprv = xprv
     k.xpub = xpub

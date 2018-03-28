@@ -7,16 +7,16 @@ import traceback
 from decimal import Decimal
 import threading
 
-import electrum_stratis as electrum
-from electrum_stratis.stratis import TYPE_ADDRESS
-from electrum_stratis import WalletStorage, Wallet
-from electrum_stratis_gui.kivy.i18n import _
-from electrum_stratis.contacts import Contacts
-from electrum_stratis.paymentrequest import InvoiceStore
-from electrum_stratis.util import profiler, InvalidPassword
-from electrum_stratis.plugins import run_hook
-from electrum_stratis.util import format_satoshis, format_satoshis_plain
-from electrum_stratis.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+import electrum_twist as electrum
+from electrum_twist.twist import TYPE_ADDRESS
+from electrum_twist import WalletStorage, Wallet
+from electrum_twist_gui.kivy.i18n import _
+from electrum_twist.contacts import Contacts
+from electrum_twist.paymentrequest import InvoiceStore
+from electrum_twist.util import profiler, InvalidPassword
+from electrum_twist.plugins import run_hook
+from electrum_twist.util import format_satoshis, format_satoshis_plain
+from electrum_twist.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -32,10 +32,10 @@ from kivy.lang import Builder
 
 # lazy imports for factory so that widgets can be used in kv
 Factory.register('InstallWizard',
-                 module='electrum_stratis_gui.kivy.uix.dialogs.installwizard')
-Factory.register('InfoBubble', module='electrum_stratis_gui.kivy.uix.dialogs')
-Factory.register('OutputList', module='electrum_stratis_gui.kivy.uix.dialogs')
-Factory.register('OutputItem', module='electrum_stratis_gui.kivy.uix.dialogs')
+                 module='electrum_twist_gui.kivy.uix.dialogs.installwizard')
+Factory.register('InfoBubble', module='electrum_twist_gui.kivy.uix.dialogs')
+Factory.register('OutputList', module='electrum_twist_gui.kivy.uix.dialogs')
+Factory.register('OutputItem', module='electrum_twist_gui.kivy.uix.dialogs')
 
 
 #from kivy.core.window import Window
@@ -49,14 +49,14 @@ util = False
 
 # register widget cache for keeping memory down timeout to forever to cache
 # the data
-Cache.register('electrum_stratis_widgets', timeout=0)
+Cache.register('electrum_twist_widgets', timeout=0)
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.label import Label
 from kivy.core.clipboard import Clipboard
 
-Factory.register('TabbedCarousel', module='electrum_stratis_gui.kivy.uix.screens')
+Factory.register('TabbedCarousel', module='electrum_twist_gui.kivy.uix.screens')
 
 # Register fonts without this you won't be able to use bold/italic...
 # inside markup.
@@ -68,7 +68,7 @@ Label.register('Roboto',
                'gui/kivy/data/fonts/Roboto-Bold.ttf')
 
 
-from electrum_stratis.util import base_units
+from electrum_twist.util import base_units
 
 
 class ElectrumWindow(App):
@@ -82,7 +82,7 @@ class ElectrumWindow(App):
         self.send_screen.set_URI(uri)
 
     def on_new_intent(self, intent):
-        if intent.getScheme() != 'stratis':
+        if intent.getScheme() != 'twist':
             return
         uri = intent.getDataString()
         self.set_URI(uri)
@@ -102,7 +102,7 @@ class ElectrumWindow(App):
             Clock.schedule_once(lambda dt: self.history_screen.update())
 
     def _get_bu(self):
-        return self.electrum_config.get('base_unit', 'STRAT')
+        return self.electrum_config.get('base_unit', 'TWIST')
 
     def _set_bu(self, value):
         assert value in base_units.keys()
@@ -191,7 +191,7 @@ class ElectrumWindow(App):
 
         super(ElectrumWindow, self).__init__(**kwargs)
 
-        title = _('Electrum-Stratis App')
+        title = _('Electrum-twist App')
         self.electrum_config = config = kwargs.get('config', None)
         self.language = config.get('language', 'en')
         self.network = network = kwargs.get('network', None)
@@ -236,16 +236,16 @@ class ElectrumWindow(App):
             self.send_screen.do_clear()
 
     def on_qr(self, data):
-        from electrum_stratis.stratis import base_decode, is_address
+        from electrum_twist.twist import base_decode, is_address
         data = data.strip()
         if is_address(data):
             self.set_URI(data)
             return
-        if data.startswith('stratis:'):
+        if data.startswith('twist:'):
             self.set_URI(data)
             return
         # try to decode transaction
-        from electrum_stratis.transaction import Transaction
+        from electrum_twist.transaction import Transaction
         try:
             text = base_decode(data, None, base=43).encode('hex')
             tx = Transaction(text)
@@ -282,7 +282,7 @@ class ElectrumWindow(App):
         self.receive_screen.screen.address = addr
 
     def show_pr_details(self, req, status, is_invoice):
-        from electrum_stratis.util import format_time
+        from electrum_twist.util import format_time
         requestor = req.get('requestor')
         exp = req.get('exp')
         memo = req.get('memo')
@@ -396,7 +396,7 @@ class ElectrumWindow(App):
 
         # default tab
         self.switch_to('history')
-        # bind intent for stratis: URI scheme
+        # bind intent for twist: URI scheme
         if platform == 'android':
             from android import activity
             from jnius import autoclass
@@ -507,13 +507,13 @@ class ElectrumWindow(App):
 
         #setup lazy imports for mainscreen
         Factory.register('AnimatedPopup',
-                         module='electrum_stratis_gui.kivy.uix.dialogs')
+                         module='electrum_twist_gui.kivy.uix.dialogs')
         Factory.register('QRCodeWidget',
-                         module='electrum_stratis_gui.kivy.uix.qrcodewidget')
+                         module='electrum_twist_gui.kivy.uix.qrcodewidget')
 
         # preload widgets. Remove this if you want to load the widgets on demand
-        #Cache.append('electrum_stratis_widgets', 'AnimatedPopup', Factory.AnimatedPopup())
-        #Cache.append('electrum_stratis_widgets', 'QRCodeWidget', Factory.QRCodeWidget())
+        #Cache.append('electrum_twist_widgets', 'AnimatedPopup', Factory.AnimatedPopup())
+        #Cache.append('electrum_twist_widgets', 'QRCodeWidget', Factory.QRCodeWidget())
 
         # load and focus the ui
         self.root.manager = self.root.ids['manager']
@@ -525,7 +525,7 @@ class ElectrumWindow(App):
         self.receive_screen = None
         self.requests_screen = None
 
-        self.icon = "icons/electrum-stratis.png"
+        self.icon = "icons/electrum-twist.png"
 
         # connect callbacks
         if self.network:
@@ -604,8 +604,8 @@ class ElectrumWindow(App):
                 from plyer import notification
             icon = (os.path.dirname(os.path.realpath(__file__))
                     + '/../../' + self.icon)
-            notification.notify('Electrum-Stratis', message,
-                            app_icon=icon, app_name='Electrum-Stratis')
+            notification.notify('Electrum-twist', message,
+                            app_icon=icon, app_name='Electrum-twist')
         except ImportError:
             Logger.Error('Notification: needs plyer; `sudo pip install plyer`')
 

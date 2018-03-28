@@ -8,11 +8,11 @@ import traceback
 import csv
 from decimal import Decimal
 
-from electrum_stratis.stratis import COIN
-from electrum_stratis.plugins import BasePlugin, hook
-from electrum_stratis.i18n import _
-from electrum_stratis.util import PrintError, ThreadJob
-from electrum_stratis.util import format_satoshis
+from electrum_twist.twist import COIN
+from electrum_twist.plugins import BasePlugin, hook
+from electrum_twist.i18n import _
+from electrum_twist.util import PrintError, ThreadJob
+from electrum_twist.util import format_satoshis
 
 
 # See https://en.wikipedia.org/wiki/ISO_4217
@@ -108,8 +108,8 @@ class Bit2C(ExchangeBase):
 class BitcoinVenezuela(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('api.bitcoinvenezuela.com', '/')
-        rates = [(r, json['STRAT'][r]) for r in json['STRAT']
-                 if json['STRAT'][r] is not None]  # Giving NULL sometimes
+        rates = [(r, json['TWIST'][r]) for r in json['TWIST']
+                 if json['TWIST'][r] is not None]  # Giving NULL sometimes
         return dict(rates)
 
     def protocol(self):
@@ -120,49 +120,49 @@ class BitcoinVenezuela(ExchangeBase):
 
     def historical_rates(self, ccy):
         json = self.get_json('api.bitcoinvenezuela.com',
-                             '/historical/index.php?coin=STRAT')
-        return json[ccy +'_STRAT']
+                             '/historical/index.php?coin=TWIST')
+        return json[ccy +'_TWIST']
 
 class Bitfinex(ExchangeBase):
     def get_rates(self, ccy):
-        json = self.get_json('api.bitfinex.com', '/v1/pubticker/stratusd')
+        json = self.get_json('api.bitfinex.com', '/v1/pubticker/TWISTusd')
         return {'USD': Decimal(json['last_price'])}
 
 class BTCChina(ExchangeBase):
     def get_rates(self, ccy):
-        json = self.get_json('data.btcchina.com', '/data/ticker?market=stratcny')
+        json = self.get_json('data.btcchina.com', '/data/ticker?market=TWISTcny')
         return {'CNY': Decimal(json['ticker']['last'])}
 
 class BTCe(ExchangeBase):
     def get_rates(self, ccy):
         ccys = ['EUR', 'RUR', 'USD']
-        ccy_str = '-'.join(['strat_%s' % c.lower() for c in ccys])
+        ccy_str = '-'.join(['TWIST_%s' % c.lower() for c in ccys])
         json = self.get_json('btc-e.com', '/api/3/ticker/%s' % ccy_str)
         result = dict.fromkeys(ccys)
         for ccy in ccys:
-            result[ccy] = Decimal(json['strat_%s' % ccy.lower()]['last'])
+            result[ccy] = Decimal(json['TWIST_%s' % ccy.lower()]['last'])
         return result
 
 class CaVirtEx(ExchangeBase):
     def get_rates(self, ccy):
-        json = self.get_json('www.cavirtex.com', '/api2/ticker.json?currencypair=STRATCAD')
-        return {'CAD': Decimal(json['ticker']['STRATCAD']['last'])}
+        json = self.get_json('www.cavirtex.com', '/api2/ticker.json?currencypair=TWISTCAD')
+        return {'CAD': Decimal(json['ticker']['TWISTCAD']['last'])}
 
 class CoinSpot(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('www.coinspot.com.au', '/pubapi/latest')
-        return {'AUD': Decimal(json['prices']['strat']['last'])}
+        return {'AUD': Decimal(json['prices']['TWIST']['last'])}
 
 class GoCoin(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('x.g0cn.com', '/prices')
-        strat_prices = json['prices']['STRAT']
-        return dict([(r, Decimal(strat_prices[r])) for r in strat_prices])
+        TWIST_prices = json['prices']['TWIST']
+        return dict([(r, Decimal(TWIST_prices[r])) for r in TWIST_prices])
 
 class HitBTC(ExchangeBase):
     def get_rates(self, ccy):
         ccys = ['EUR', 'USD']
-        json = self.get_json('api.hitbtc.com', '/api/1/public/STRAT%s/ticker' % ccy)
+        json = self.get_json('api.hitbtc.com', '/api/1/public/TWIST%s/ticker' % ccy)
         result = dict.fromkeys(ccys)
         if ccy in ccys:
             result[ccy] = Decimal(json['last'])
@@ -171,33 +171,33 @@ class HitBTC(ExchangeBase):
 class Kraken(ExchangeBase):
     def get_rates(self, ccy):
         dicts = self.get_json('api.kraken.com', '/0/public/AssetPairs')
-        pairs = [k for k in dicts['result'] if k.startswith('XSTRATZ')]
+        pairs = [k for k in dicts['result'] if k.startswith('XTWISTZ')]
         json = self.get_json('api.kraken.com',
                              '/0/public/Ticker?pair=%s' % ','.join(pairs))
         ccys = [p[5:] for p in pairs]
         result = dict.fromkeys(ccys)
-        result[ccy] = Decimal(json['result']['XSTRATZ'+ccy]['c'][0])
+        result[ccy] = Decimal(json['result']['XTWISTZ'+ccy]['c'][0])
         return result
 
     def history_ccys(self):
         return ['EUR', 'USD']
 
     def historical_rates(self, ccy):
-        query = '/0/public/OHLC?pair=STRAT%s&interval=1440' % ccy
+        query = '/0/public/OHLC?pair=TWIST%s&interval=1440' % ccy
         json = self.get_json('api.kraken.com', query)
-        history = json['result']['XSTRATZ'+ccy]
+        history = json['result']['XTWISTZ'+ccy]
         return dict([(time.strftime('%Y-%m-%d', time.localtime(t[0])), t[4])
                                     for t in history])
 
 class OKCoin(ExchangeBase):
     def get_rates(self, ccy):
-        json = self.get_json('www.okcoin.cn', '/api/ticker.do?symbol=strat_cny')
+        json = self.get_json('www.okcoin.cn', '/api/ticker.do?symbol=TWIST_cny')
         return {'CNY': Decimal(json['ticker']['last'])}
 
 class MercadoBitcoin(ExchangeBase):
     def get_rates(self,ccy):
         json = self.get_json('mercadobitcoin.net',
-                                "/api/ticker/ticker_stratis")
+                                "/api/ticker/ticker_twist")
         return {'BRL': Decimal(json['ticker']['last'])}
     
     def history_ccys(self):
@@ -206,7 +206,7 @@ class MercadoBitcoin(ExchangeBase):
 class Bitcointoyou(ExchangeBase):
     def get_rates(self,ccy):
         json = self.get_json('bitcointoyou.com',
-                                "/API/ticker_stratis.aspx")
+                                "/API/ticker_twist.aspx")
         return {'BRL': Decimal(json['ticker']['last'])}
 
     def history_ccys(self):

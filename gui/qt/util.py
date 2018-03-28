@@ -8,7 +8,7 @@ import Queue
 from collections import namedtuple
 from functools import partial
 
-from electrum_stratis.i18n import _
+from electrum_twist.i18n import _
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -27,7 +27,7 @@ BLACK_FG = "QWidget {color:black;}"
 
 dialogs = []
 
-from electrum_stratis.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
+from electrum_twist.paymentrequest import PR_UNPAID, PR_PAID, PR_UNKNOWN, PR_EXPIRED
 
 pr_icons = {
     PR_UNPAID:":icons/unpaid.png",

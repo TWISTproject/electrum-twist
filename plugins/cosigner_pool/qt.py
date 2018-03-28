@@ -31,12 +31,12 @@ import xmlrpclib
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from electrum_stratis import stratis, util
-from electrum_stratis import transaction
-from electrum_stratis.plugins import BasePlugin, hook
-from electrum_stratis.i18n import _
+from electrum_twist import twist, util
+from electrum_twist import transaction
+from electrum_twist.plugins import BasePlugin, hook
+from electrum_twist.i18n import _
 
-from electrum_stratis_gui.qt.transaction_dialog import show_transaction
+from electrum_twist_gui.qt.transaction_dialog import show_transaction
 
 import sys
 import traceback
@@ -128,8 +128,8 @@ class Plugin(BasePlugin):
         self.cosigner_list = []
         for key, keystore in wallet.keystores.items():
             xpub = keystore.get_master_public_key()
-            K = stratis.deserialize_xkey(xpub)[-1].encode('hex')
-            _hash = stratis.Hash(K).encode('hex')
+            K = twist.deserialize_xkey(xpub)[-1].encode('hex')
+            _hash = twist.Hash(K).encode('hex')
             if wallet.master_private_keys.get(key):
                 self.keys.append((key, _hash, window))
             else:
@@ -157,7 +157,7 @@ class Plugin(BasePlugin):
             d.cosigner_send_button.hide()
 
     def cosigner_can_sign(self, tx, cosigner_xpub):
-        from electrum_stratis.keystore import is_xpubkey, parse_xpubkey
+        from electrum_twist.keystore import is_xpubkey, parse_xpubkey
         xpub_set = set([])
         for txin in tx.inputs():
             for x_pubkey in txin['x_pubkeys']:
@@ -170,7 +170,7 @@ class Plugin(BasePlugin):
         for window, xpub, K, _hash in self.cosigner_list:
             if not self.cosigner_can_sign(tx, xpub):
                 continue
-            message = stratis.encrypt_message(tx.raw, K)
+            message = twist.encrypt_message(tx.raw, K)
             try:
                 server.put(_hash, message)
             except Exception as e:
@@ -202,8 +202,8 @@ class Plugin(BasePlugin):
         if not xprv:
             return
         try:
-            k = stratis.deserialize_xkey(xprv)[-1].encode('hex')
-            EC = stratis.EC_KEY(k.decode('hex'))
+            k = twist.deserialize_xkey(xprv)[-1].encode('hex')
+            EC = twist.EC_KEY(k.decode('hex'))
             message = EC.decrypt_message(message)
         except Exception as e:
             traceback.print_exc(file=sys.stdout)

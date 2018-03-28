@@ -25,7 +25,7 @@
 
 
 from util import ThreadJob
-from stratis import *
+from twist import *
 
 
 class SPV(ThreadJob):
